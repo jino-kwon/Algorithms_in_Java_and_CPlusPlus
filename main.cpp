@@ -13,7 +13,6 @@ private:
     friend class LLQueue;
     friend class RadixSort;
 public:
-
 //  constructor
     listNode(int n) {
         data = n;
@@ -124,11 +123,11 @@ public:
         outFile2<<"("+to_string(tmp->data)+", NULL)-->NULL\n";
     }
 
-    void printData(int whichTable, int index, ofstream &outFile1) {
+    void printData(int whichTable, int index, int offSet, ofstream &outFile1) {
         listNode* tmp = head;
-        while (tmp->next != NULL) {
+        while (tmp != NULL) {
             if (tmp->data != -9999) {
-                outFile1 << tmp->data << endl;
+                outFile1 << tmp->data - offSet << endl;
             }
             tmp = tmp->next;
         }
@@ -149,11 +148,19 @@ private:
     int offSet; // the absolute value of the largest negative integer in the data
     int currentPosition; // The current digit position
 public:
-//  create hashTable[2][tableSize]
+    // constructor: create hashTable[2][tableSize]
     RadixSort() {
         for (int i=0; i<2; i++) {
             for (int j=0; j<tableSize; j++) {
                 hashTable[i][j] = new LLQueue();
+            }
+        }
+    }
+    // 이렇게 하는게 맞을까?
+    ~RadixSort() {
+        for (int i=0; i<2; i++) {
+            for (int j=0; j<tableSize; j++) {
+                delete hashTable[i][j];
             }
         }
     }
@@ -261,7 +268,7 @@ public:
     void printSortedData(int whichTable, ofstream &outFile1) {
         for (int index=0; index<tableSize; index++) {
             LLQueue* tmp = hashTable[whichTable][index];
-            tmp->printData(whichTable, index, outFile1);
+            tmp->printData(whichTable, index, offSet, outFile1);
         }
     }
 };
@@ -276,14 +283,14 @@ int main(int argc, char* argv[])
     //   return -1;
     // }
     
-    inFile.open("Data2.txt");
+    inFile.open("data.txt");
     outFile1.open("output1.txt");
     outFile2.open("output2.txt");
     RadixSort R;
     R.firstReading(inFile, outFile2);
     inFile.close();
 
-    inFile.open("Data2.txt");
+    inFile.open("data.txt");
     LLStack S = R.loadStack(inFile, outFile2);
     S.printStack(outFile2); //for debugging purposes
     R.RSort(S, outFile1, outFile2);
