@@ -140,12 +140,11 @@ class RadixSort
 private:
     int tableSize = 10;
     LLQueue* hashTable[2][10];
-    // int data;
     int currentTable; //either 0 or 1
     int previousTable; //either 0 or 1
     int currentQueue;
     int numDigits;
-    int offSet; // the absolute value of the largest negative integer in the data
+    int offSet; // the absolute value of the largest negative integer
     int currentPosition; // The current digit position
 public:
     // constructor: create hashTable[2][tableSize]
@@ -156,7 +155,6 @@ public:
             }
         }
     }
-    // 이렇게 하는게 맞을까?
     ~RadixSort() {
         for (int i=0; i<2; i++) {
             for (int j=0; j<tableSize; j++) {
@@ -180,7 +178,7 @@ public:
         // Step 4
         positiveNum = positiveNum + offSet;
         numDigits = this->getLength(positiveNum);
-        outFile2 << "positiveNum: " + to_string(positiveNum) + " | negativeNum: " + to_string(negativeNum) + " | offSet: " + to_string(offSet) + " | numDigits: " + to_string(numDigits) << endl; 
+        outFile2 << "Positive Number: " + to_string(positiveNum) + " | Negative Number: " + to_string(negativeNum) + " | Offset: " + to_string(offSet) + " | Number of Digits: " + to_string(numDigits) << endl << endl;
     }
 
     LLStack loadStack(ifstream &inFile, ofstream &outFile2) {
@@ -251,24 +249,27 @@ public:
 
     int getDigit(int data, int currentPosition) {
         string str = to_string(data);
+        // turn the data into a zero-padded string
         string dataStr = string(numDigits-str.length(), '0')+str;
+        // string indexing is from left to right. BUT,
+        // the currentPosition should count from right to left.
         int digit = dataStr.at(numDigits-1-currentPosition)-'0';
         return digit;
     }
 
     void printTable(int whichTable, ofstream &outFile2) {
         for (int index=0; index<tableSize; index++) {
-            // LLQueue* tmp = hashTable[whichTable][index];
-            // cout << tmp->peek() << endl;
-            // cout << hashTable[whichTable][index]->peek() << endl;
-            hashTable[whichTable][index]->printQueue(whichTable, index, outFile2);
+            LLQueue* tmp = hashTable[whichTable][index];
+            if (!tmp->isEmpty())
+                tmp->printQueue(whichTable, index, outFile2);
         }
     }
-
+    // for the final output to outFile1
     void printSortedData(int whichTable, ofstream &outFile1) {
         for (int index=0; index<tableSize; index++) {
             LLQueue* tmp = hashTable[whichTable][index];
-            tmp->printData(whichTable, index, offSet, outFile1);
+            if (!tmp->isEmpty())
+                tmp->printData(whichTable, index, offSet, outFile1);
         }
     }
 };
@@ -283,14 +284,14 @@ int main(int argc, char* argv[])
     //   return -1;
     // }
     
-    inFile.open("data.txt");
+    inFile.open("Data2.txt");
     outFile1.open("output1.txt");
     outFile2.open("output2.txt");
     RadixSort R;
     R.firstReading(inFile, outFile2);
     inFile.close();
 
-    inFile.open("data.txt");
+    inFile.open("Data2.txt");
     LLStack S = R.loadStack(inFile, outFile2);
     S.printStack(outFile2); //for debugging purposes
     R.RSort(S, outFile1, outFile2);
