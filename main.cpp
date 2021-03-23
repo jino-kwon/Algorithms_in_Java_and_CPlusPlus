@@ -40,7 +40,7 @@ public:
 
 class QtTreeNode
 {
-private:
+public:
     int color; // 0, 1 or 5
     int upperR;
     int upperC;
@@ -50,7 +50,6 @@ private:
     QtTreeNode* SWkid = NULL;
     QtTreeNode* SEkid = NULL;
 
-public:
 //  constructor
     QtTreeNode(int upR, int upC, int s, QtTreeNode* nwKid, QtTreeNode* neKid, QtTreeNode* swKid, QtTreeNode* seKid) {
         upperR = upR;
@@ -74,7 +73,32 @@ public:
     QuadTree(int** imgAry, int upR, int upC, int size, ofstream &outFile) {
         D
     }
-}
+    bool isLeaf(QtTreeNode* Qt) {
+        return (Qt->NWkid == NULL && Qt->NEkid == NULL && Qt->SWkid == NULL && Qt->SEkid == NULL);
+    }
+    void preOrder(QtTreeNode* Qt, ofstream &outFile) {
+        if (isLeaf(Qt)) {
+            Qt->printQtNode(Qt, outFile);
+        } else {
+            Qt->printQtNode(Qt, outFile);
+            preOrder(Qt->NWkid, outFile);
+            preOrder(Qt->NEkid, outFile);
+            preOrder(Qt->SWkid, outFile);
+            preOrder(Qt->SEkid, outFile);
+        }
+    }
+    void postOrder(QtTreeNode* Qt, ofstream &outFile) {
+        if (isLeaf(Qt)) {
+            Qt->printQtNode(Qt, outFile);
+        } else {
+            preOrder(Qt->NWkid, outFile);
+            preOrder(Qt->NEkid, outFile);
+            preOrder(Qt->SWkid, outFile);
+            preOrder(Qt->SEkid, outFile);
+            Qt->printQtNode(Qt, outFile);
+        }
+    }
+};
 
 int main(int argc, char* argv[])
 {
@@ -103,8 +127,6 @@ int main(int argc, char* argv[])
     outFile2.close();
     return 0;
 }
-
-
 
 // class LLStack
 // {
