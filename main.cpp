@@ -52,9 +52,9 @@ private:
 
 public:
 //  constructor
-    QtTreeNode(int ur, int uc, int s, QtTreeNode* nwKid, QtTreeNode* neKid, QtTreeNode* swKid, QtTreeNode* seKid) {
-        upperR = ur;
-        upperC = uc;
+    QtTreeNode(int upR, int upC, int s, QtTreeNode* nwKid, QtTreeNode* neKid, QtTreeNode* swKid, QtTreeNode* seKid) {
+        upperR = upR;
+        upperC = upC;
         size = s;
         NWkid = nwKid;
         NEkid = neKid;
@@ -71,7 +71,7 @@ class QuadTree
 private:
     QtTreeNode* QtRoot;
 public:
-    QuadTree(int** imgAry, ) {
+    QuadTree(int** imgAry, int upR, int upC, int size, ofstream &outFile) {
         D
     }
 }
