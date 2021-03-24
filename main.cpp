@@ -71,7 +71,9 @@ private:
     QtTreeNode* QtRoot;
 public:
     QuadTree(int** imgAry, int upR, int upC, int size, ofstream &outFile) {
-        D
+        QtTreeNode* newQtNode(upR, upC, size, NULL, NULL, NULL, NULL);
+        
+
     }
     bool isLeaf(QtTreeNode* Qt) {
         return (Qt->NWkid == NULL && Qt->NEkid == NULL && Qt->SWkid == NULL && Qt->SEkid == NULL);
@@ -91,10 +93,10 @@ public:
         if (isLeaf(Qt)) {
             Qt->printQtNode(Qt, outFile);
         } else {
-            preOrder(Qt->NWkid, outFile);
-            preOrder(Qt->NEkid, outFile);
-            preOrder(Qt->SWkid, outFile);
-            preOrder(Qt->SEkid, outFile);
+            postOrder(Qt->NWkid, outFile);
+            postOrder(Qt->NEkid, outFile);
+            postOrder(Qt->SWkid, outFile);
+            postOrder(Qt->SEkid, outFile);
             Qt->printQtNode(Qt, outFile);
         }
     }
