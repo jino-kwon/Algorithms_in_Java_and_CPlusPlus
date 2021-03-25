@@ -83,22 +83,22 @@ public:
         string SEcolor;
 
         if (node->NWkid == NULL) {
-            NWcolor = "NULL";
+            NWcolor = "-1";
         } else {
             NWcolor = to_string(node->NWkid->color);
         }
         if (node->NEkid == NULL) {
-            NEcolor = "NULL";
+            NEcolor = "-1";
         } else {
             NEcolor = to_string(node->NEkid->color);
         }
         if (node->SWkid == NULL) {
-            SWcolor = "NULL";
+            SWcolor = "-1";
         } else {
             SWcolor = to_string(node->SWkid->color);
         }
         if (node->SEkid == NULL) {
-            SEcolor = "NULL";
+            SEcolor = "-1";
         } else {
             SEcolor = to_string(node->SEkid->color);
         }
@@ -182,9 +182,9 @@ int main(int argc, char* argv[])
     //   return -1;
     // }
 
-    inFile.open("img2.txt");
-    outFile1.open("img2_output1.txt");
-    outFile2.open("img2_output2.txt");
+    inFile.open("img1.txt");
+    outFile1.open("img1_output1.txt");
+    outFile2.open("img1_output2.txt");
     string numRows, numCols, minVal, maxVal;
     inFile >> numRows;
     inFile >> numCols;
