@@ -56,7 +56,7 @@ public:
 class QtTreeNode
 {
 public:
-    int color; // 0, 1 or 5
+    int color=-1; // 0, 1 or 5
     int upperR;
     int upperC;
     int size;
@@ -77,7 +77,34 @@ public:
         SEkid = seKid;
     }
     void printQtNode(QtTreeNode* node, ofstream &outFile) {
-        outFile << "(color: " + to_string(node->color) + ", upperR: " + to_string(node->upperR) + ", upperC: " + to_string(node->upperC) + ", NWkid's color: " + to_string(node->NWkid->color) + ", NEkid's color: " + to_string(node->NEkid->color) + ", SWkid's color: " + to_string(node->SWkid->color) + ", SEkid's color: " + to_string(node->SEkid->color) + ")-->" << endl;       
+        string NWcolor;
+        string NEcolor;
+        string SWcolor;
+        string SEcolor;
+
+        if (node->NWkid == NULL) {
+            NWcolor = "NULL";
+        } else {
+            NWcolor = to_string(node->NWkid->color);
+        }
+        if (node->NEkid == NULL) {
+            NEcolor = "NULL";
+        } else {
+            NEcolor = to_string(node->NEkid->color);
+        }
+        if (node->SWkid == NULL) {
+            SWcolor = "NULL";
+        } else {
+            SWcolor = to_string(node->SWkid->color);
+        }
+        if (node->SEkid == NULL) {
+            SEcolor = "NULL";
+        } else {
+            SEcolor = to_string(node->SEkid->color);
+        }
+
+        outFile << "(color: " + to_string(node->color) + ", upperR: " + to_string(node->upperR) + ", upperC: " + to_string(node->upperC) + ", NWkid's color: " + NWcolor + ", NEkid's color: " + NEcolor + ", SWkid's color: " + SWcolor + ", SEkid's color: " + SEcolor + ")-->"
+         << endl;       
     }
 };
 
@@ -87,37 +114,36 @@ public:
     QtTreeNode* QtRoot;
 
     QtTreeNode* buildQuadTree(int** imgAry, int upR, int upC, int size, ofstream &outFile) {
-        QtTreeNode newQtNode(-1, upR, upC, size, NULL, NULL, NULL, NULL);
-        QtTreeNode* newQtNodePtr = &newQtNode;
+        QtTreeNode* newQtNode = new QtTreeNode(-1, upR, upC, size, NULL, NULL, NULL, NULL);
         outFile << "New Node: ";
-        newQtNodePtr->printQtNode(newQtNodePtr, outFile);
+        newQtNode->printQtNode(newQtNode, outFile);
         if (size == 1) {
-            newQtNodePtr->color = imgAry[upR][upC];
+            newQtNode->color = imgAry[upR][upC];
         } else {
             int halfSize = size/2;
-            newQtNode.NWkid = buildQuadTree(imgAry, upR, upC, halfSize, outFile);
-            newQtNode.NEkid = buildQuadTree(imgAry, upR, upC+halfSize, halfSize, outFile);
-            newQtNode.SWkid = buildQuadTree(imgAry, upR+halfSize, upC, halfSize, outFile);
-            newQtNode.SEkid = buildQuadTree(imgAry, upR+halfSize, upC+halfSize, halfSize, outFile);
-            int sumColor = newQtNode.NWkid->color + newQtNode.NEkid->color + newQtNode.SWkid->color + newQtNode.SEkid->color;
+            newQtNode->NWkid = buildQuadTree(imgAry, upR, upC, halfSize, outFile);
+            newQtNode->NEkid = buildQuadTree(imgAry, upR, upC+halfSize, halfSize, outFile);
+            newQtNode->SWkid = buildQuadTree(imgAry, upR+halfSize, upC, halfSize, outFile);
+            newQtNode->SEkid = buildQuadTree(imgAry, upR+halfSize, upC+halfSize, halfSize, outFile);
+            int sumColor = newQtNode->NWkid->color + newQtNode->NEkid->color + newQtNode->SWkid->color + newQtNode->SEkid->color;
 
             if (sumColor == 0) { //newQtNode is a leaf node
-                newQtNode.color = 0;
-                newQtNode.NWkid = NULL;
-                newQtNode.NEkid = NULL;
-                newQtNode.SWkid = NULL;
-                newQtNode.SEkid = NULL;
+                newQtNode->color = 0;
+                newQtNode->NWkid = NULL;
+                newQtNode->NEkid = NULL;
+                newQtNode->SWkid = NULL;
+                newQtNode->SEkid = NULL;
             } else if (sumColor == 4) { //all kids are 1
-                newQtNode.color = 1;
-                newQtNode.NWkid = NULL;
-                newQtNode.NEkid = NULL;
-                newQtNode.SWkid = NULL;
-                newQtNode.SEkid = NULL;
+                newQtNode->color = 1;
+                newQtNode->NWkid = NULL;
+                newQtNode->NEkid = NULL;
+                newQtNode->SWkid = NULL;
+                newQtNode->SEkid = NULL;
             } else {
-                newQtNode.color = 5;
+                newQtNode->color = 5;
             }
         }
-        return newQtNodePtr;
+        return newQtNode;
     }
     bool isLeaf(QtTreeNode* Qt) {
         return (Qt->NWkid == NULL && Qt->NEkid == NULL && Qt->SWkid == NULL && Qt->SEkid == NULL);
@@ -156,9 +182,9 @@ int main(int argc, char* argv[])
     //   return -1;
     // }
 
-    inFile.open("img0.txt");
-    outFile1.open("output1.txt");
-    outFile2.open("output2.txt");
+    inFile.open("img2.txt");
+    outFile1.open("img2_output1.txt");
+    outFile2.open("img2_output2.txt");
     string numRows, numCols, minVal, maxVal;
     inFile >> numRows;
     inFile >> numCols;
@@ -187,13 +213,15 @@ int main(int argc, char* argv[])
 
     QuadTree QT;
     QtTreeNode* QtRoot;
-    outFile2 << "*** Build a quad tree:" << endl;
+    outFile2 << "\n*** Build a quad tree:" << endl;
     QtRoot = QT.buildQuadTree(imgAry, 0, 0, power2Size, outFile2);
 
-    // outFile1 << "*** PreOrder Traversal: " << endl;
-    // QT.preOrder(QtRoot, outFile1);
-    // outFile1 << "*** PostOrder Traversal: " << endl;
-    // QT.postOrder(QtRoot, outFile1);
+    outFile1 << "*** PreOrder Traversal: " << endl;
+    QT.preOrder(QtRoot, outFile1);
+    outFile1 << "------------ END ------------" << endl << endl;
+    outFile1 << "*** PostOrder Traversal: " << endl;
+    QT.postOrder(QtRoot, outFile1);
+    outFile1 << "------------ END ------------";
 
     inFile.close();
     outFile1.close();
