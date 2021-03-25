@@ -33,8 +33,9 @@ public:
         int data;
         int col = 0;
         int row = 0;
+        string line;
         while (inFile >> data) {
-            if (col == power2Size-1) {
+            if (col == numCols-1) {
                 imgAry[row][col] = data;
                 row += 1;
                 col = 0;
@@ -182,9 +183,9 @@ int main(int argc, char* argv[])
     //   return -1;
     // }
 
-    inFile.open("img1.txt");
-    outFile1.open("img1_output1.txt");
-    outFile2.open("img1_output2.txt");
+    inFile.open("img2.txt");
+    outFile1.open("img2_output1.txt");
+    outFile2.open("img2_output2.txt");
     string numRows, numCols, minVal, maxVal;
     inFile >> numRows;
     inFile >> numCols;
