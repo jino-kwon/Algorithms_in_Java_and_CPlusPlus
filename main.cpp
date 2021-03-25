@@ -5,15 +5,14 @@ using namespace std;
 
 class image
 {
-private:
+public:
     int numRows;
     int numCols;
     int minVal;
     int maxVal;
     int power2Size;
-    int** imgAry; // a 2D array, need to dynamically allocate at run time of size power2Size by power2Size.
+    int** imageArray;
 
-public:
 //  constructor
     image(int nr, int nc, int min, int max) {
         numRows = nr;
@@ -21,21 +20,41 @@ public:
         minVal = min;
         maxVal = max;
     }
-    int computePower2(int numRows, int numCols) {
+    int computePower2() {
         int size = max(numRows,numCols);
         int power2 = 2;
         while (size > power2) {
             power2 *= 2;
         }
-        // power2Size = power2;
+        power2Size = power2;
         return power2;
     }
     void loadImage(ifstream &inFile, int** imgAry) {
-        d
+        int data;
+        int col = 0;
+        int row = 0;
+        while (inFile >> data) {
+            if (col == power2Size-1) {
+                imgAry[row][col] = data;
+                row += 1;
+                col = 0;
+            } else {
+                imgAry[row][col] = data;
+                col += 1;
+            }
+        }
     }
     void zero2DAry(int** imgAry) {
-        d
+        for (int i=0; i<power2Size; i++) {
+            for (int j=0; j<power2Size; j++) {
+                imgAry[i][j] = 0;
+            }
+        }
     }
+//         while (inFile >> data) {
+//             if (data < negativeNum) negativeNum = data;
+//             if (data > positiveNum) positiveNum = data;
+//         }
 };
 
 class QtTreeNode
@@ -67,37 +86,64 @@ public:
 
 class QuadTree
 {
-private:
-    QtTreeNode* QtRoot;
 public:
-    QuadTree(int** imgAry, int upR, int upC, int size, ofstream &outFile) {
-        QtTreeNode* newQtNode(upR, upC, size, NULL, NULL, NULL, NULL);
-        
+    QtTreeNode* QtRoot;
 
+    QtTreeNode* buildQuadTree(int** imgAry, int upR, int upC, int size, ofstream &outFile) {
+        QtTreeNode newQtNode(upR, upC, size, NULL, NULL, NULL, NULL);
+        QtTreeNode* newQtNodePtr = &newQtNode;
+        newQtNodePtr->printQtNode(newQtNodePtr, outFile);
+        if (size == 1) {
+            newQtNodePtr->color = imgAry[upR][upC];
+        } else {
+            int halfSize = size/2;
+            newQtNode.NWkid = buildQuadTree(imgAry, upR, upC, halfSize, outFile);
+            newQtNode.NEkid = buildQuadTree(imgAry, upR, upC+halfSize, halfSize, outFile);
+            newQtNode.SWkid = buildQuadTree(imgAry, upR+halfSize, upC, halfSize, outFile);
+            newQtNode.SEkid = buildQuadTree(imgAry, upR+halfSize, upC+halfSize, halfSize, outFile);
+            int sumColor = newQtNode.NWkid->color + newQtNode.NEkid->color + newQtNode.SWkid->color + newQtNode.SEkid->color;
+
+            if (sumColor == 0) { //newQtNode is a leaf node
+                newQtNode.color = 0;
+                newQtNode.NWkid = NULL;
+                newQtNode.NEkid = NULL;
+                newQtNode.SWkid = NULL;
+                newQtNode.SEkid = NULL;
+            } else if (sumColor == 4) { //all kids are 1
+                newQtNode.color = 1;
+                newQtNode.NWkid = NULL;
+                newQtNode.NEkid = NULL;
+                newQtNode.SWkid = NULL;
+                newQtNode.SEkid = NULL;
+            } else {
+                newQtNode.color = 5;
+            }
+        }
+        return newQtNodePtr;
     }
     bool isLeaf(QtTreeNode* Qt) {
         return (Qt->NWkid == NULL && Qt->NEkid == NULL && Qt->SWkid == NULL && Qt->SEkid == NULL);
     }
-    void preOrder(QtTreeNode* Qt, ofstream &outFile) {
+    void preOrder(QtTreeNode* Qt, ofstream &outFile1) {
         if (isLeaf(Qt)) {
-            Qt->printQtNode(Qt, outFile);
+            Qt->printQtNode(Qt, outFile1);
         } else {
-            Qt->printQtNode(Qt, outFile);
-            preOrder(Qt->NWkid, outFile);
-            preOrder(Qt->NEkid, outFile);
-            preOrder(Qt->SWkid, outFile);
-            preOrder(Qt->SEkid, outFile);
+            Qt->printQtNode(Qt, outFile1);
+            preOrder(Qt->NWkid, outFile1);
+            preOrder(Qt->NEkid, outFile1);
+            preOrder(Qt->SWkid, outFile1);
+            preOrder(Qt->SEkid, outFile1);
         }
     }
-    void postOrder(QtTreeNode* Qt, ofstream &outFile) {
+    void postOrder(QtTreeNode* Qt, ofstream &outFile1) {
         if (isLeaf(Qt)) {
-            Qt->printQtNode(Qt, outFile);
+            Qt->printQtNode(Qt, outFile1);
         } else {
-            postOrder(Qt->NWkid, outFile);
-            postOrder(Qt->NEkid, outFile);
-            postOrder(Qt->SWkid, outFile);
-            postOrder(Qt->SEkid, outFile);
-            Qt->printQtNode(Qt, outFile);
+            postOrder(Qt->NWkid, outFile1);
+            postOrder(Qt->NEkid, outFile1);
+            postOrder(Qt->SWkid, outFile1);
+            postOrder(Qt->SEkid, outFile1);
+            Qt->printQtNode(Qt, outFile1);
         }
     }
 };
@@ -111,18 +157,44 @@ int main(int argc, char* argv[])
     //   cout<<"Invalid Number of Files"<<endl;
     //   return -1;
     // }
-    
-    inFile.open("Data2.txt");
+
+    inFile.open("img0.txt");
     outFile1.open("output1.txt");
     outFile2.open("output2.txt");
-    RadixSort R;
-    R.firstReading(inFile, outFile2);
-    inFile.close();
+    string numRows, numCols, minVal, maxVal;
+    inFile >> numRows;
+    inFile >> numCols;
+    inFile >> minVal;
+    inFile >> maxVal;
+    image I(stoi(numRows), stoi(numCols), stoi(minVal), stoi(maxVal));
+    int power2Size = I.computePower2();
+    outFile2 << "*** power2Size is " << power2Size << endl;
 
-    inFile.open("Data2.txt");
-    LLStack S = R.loadStack(inFile, outFile2);
-    S.printStack(outFile2); //for debugging purposes
-    R.RSort(S, outFile1, outFile2);
+    int** imgAry; //dynamically allocate the array size of power2Size by power2Size
+    imgAry = new int*[power2Size];
+    for (int i=0; i<power2Size; i++) {
+        imgAry[i] = new int[power2Size];
+    }
+    I.zero2DAry(imgAry);
+    I.loadImage(inFile, imgAry);
+    outFile2 << "*** imgAry: " << endl;
+    for (int i=0; i<power2Size; i++) {
+        for (int j=0; j<power2Size; j++) {
+            outFile2 << imgAry[i][j] << " ";
+            if (j==power2Size-1) {
+                outFile2 << endl;
+            }
+        }
+    }
+
+    QuadTree QT;
+    QtTreeNode* QtRoot;
+    QtRoot = QT.buildQuadTree(imgAry, 0, 0, power2Size, outFile2);
+
+    outFile1 << "*** PreOrder Traversal: " << endl;
+    QT.preOrder(QtRoot, outFile1);
+    outFile1 << "*** PostOrder Traversal: " << endl;
+    QT.postOrder(QtRoot, outFile1);
 
     inFile.close();
     outFile1.close();
