@@ -66,7 +66,8 @@ public:
     QtTreeNode* SEkid = NULL;
 
 //  constructor
-    QtTreeNode(int upR, int upC, int s, QtTreeNode* nwKid, QtTreeNode* neKid, QtTreeNode* swKid, QtTreeNode* seKid) {
+    QtTreeNode(int c, int upR, int upC, int s, QtTreeNode* nwKid, QtTreeNode* neKid, QtTreeNode* swKid, QtTreeNode* seKid) {
+        color = c;
         upperR = upR;
         upperC = upC;
         size = s;
@@ -76,7 +77,7 @@ public:
         SEkid = seKid;
     }
     void printQtNode(QtTreeNode* node, ofstream &outFile) {
-        outFile << "(color: " << node->color << ", upperR: " << node->upperR << ", upperC: " << node->upperC << ", NWkid's color: " << node->NWkid->color << ", NEkid's color: " << node->NEkid->color << ", SWkid's color: " << node->SWkid->color << ", SEkid's color: " << node->SEkid->color << ")-->" << endl;       
+        outFile << "(color: " + to_string(node->color) + ", upperR: " + to_string(node->upperR) + ", upperC: " + to_string(node->upperC) + ", NWkid's color: " + to_string(node->NWkid->color) + ", NEkid's color: " + to_string(node->NEkid->color) + ", SWkid's color: " + to_string(node->SWkid->color) + ", SEkid's color: " + to_string(node->SEkid->color) + ")-->" << endl;       
     }
 };
 
@@ -86,7 +87,7 @@ public:
     QtTreeNode* QtRoot;
 
     QtTreeNode* buildQuadTree(int** imgAry, int upR, int upC, int size, ofstream &outFile) {
-        QtTreeNode newQtNode(upR, upC, size, NULL, NULL, NULL, NULL);
+        QtTreeNode newQtNode(-1, upR, upC, size, NULL, NULL, NULL, NULL);
         QtTreeNode* newQtNodePtr = &newQtNode;
         outFile << "New Node: ";
         newQtNodePtr->printQtNode(newQtNodePtr, outFile);
