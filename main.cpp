@@ -76,7 +76,7 @@ public:
         SEkid = seKid;
     }
     void printQtNode(QtTreeNode* node, ofstream &outFile) {
-        outFile << "(color: " << node->color << ", upperR: " << node->upperR << ", upperC: " << node->upperC << ", NWkid's color: " << node->NWkid->color << ", NEkid's color: " << node->NEkid->color << ", SWkid's color: " << node->SWkid->color << ", SEkid's color: " << node->SEkid->color << ")-->\n";       
+        outFile << "(color: " << node->color << ", upperR: " << node->upperR << ", upperC: " << node->upperC << ", NWkid's color: " << node->NWkid->color << ", NEkid's color: " << node->NEkid->color << ", SWkid's color: " << node->SWkid->color << ", SEkid's color: " << node->SEkid->color << ")-->" << endl;       
     }
 };
 
@@ -88,6 +88,7 @@ public:
     QtTreeNode* buildQuadTree(int** imgAry, int upR, int upC, int size, ofstream &outFile) {
         QtTreeNode newQtNode(upR, upC, size, NULL, NULL, NULL, NULL);
         QtTreeNode* newQtNodePtr = &newQtNode;
+        outFile << "New Node: ";
         newQtNodePtr->printQtNode(newQtNodePtr, outFile);
         if (size == 1) {
             newQtNodePtr->color = imgAry[upR][upC];
@@ -173,7 +174,7 @@ int main(int argc, char* argv[])
     }
     I.zero2DAry(imgAry);
     I.loadImage(inFile, imgAry);
-    outFile2 << "*** imgAry: " << endl;
+    outFile2 << "*** imgAry:" << endl;
     for (int i=0; i<power2Size; i++) {
         for (int j=0; j<power2Size; j++) {
             outFile2 << imgAry[i][j] << " ";
@@ -185,6 +186,7 @@ int main(int argc, char* argv[])
 
     QuadTree QT;
     QtTreeNode* QtRoot;
+    outFile2 << "*** Build a quad tree:" << endl;
     QtRoot = QT.buildQuadTree(imgAry, 0, 0, power2Size, outFile2);
 
     // outFile1 << "*** PreOrder Traversal: " << endl;
