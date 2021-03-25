@@ -51,10 +51,6 @@ public:
             }
         }
     }
-//         while (inFile >> data) {
-//             if (data < negativeNum) negativeNum = data;
-//             if (data > positiveNum) positiveNum = data;
-//         }
 };
 
 class QtTreeNode
@@ -80,7 +76,7 @@ public:
         SEkid = seKid;
     }
     void printQtNode(QtTreeNode* node, ofstream &outFile) {
-        // outFile << "(" + to_string(node->data) + ", " + to_string(node->next->data) + ")-->";        
+        outFile << "(color: " << node->color << ", upperR: " << node->upperR << ", upperC: " << node->upperC << ", NWkid's color: " << node->NWkid->color << ", NEkid's color: " << node->NEkid->color << ", SWkid's color: " << node->SWkid->color << ", SEkid's color: " << node->SEkid->color << ")-->\n";       
     }
 };
 
@@ -191,10 +187,10 @@ int main(int argc, char* argv[])
     QtTreeNode* QtRoot;
     QtRoot = QT.buildQuadTree(imgAry, 0, 0, power2Size, outFile2);
 
-    outFile1 << "*** PreOrder Traversal: " << endl;
-    QT.preOrder(QtRoot, outFile1);
-    outFile1 << "*** PostOrder Traversal: " << endl;
-    QT.postOrder(QtRoot, outFile1);
+    // outFile1 << "*** PreOrder Traversal: " << endl;
+    // QT.preOrder(QtRoot, outFile1);
+    // outFile1 << "*** PostOrder Traversal: " << endl;
+    // QT.postOrder(QtRoot, outFile1);
 
     inFile.close();
     outFile1.close();
