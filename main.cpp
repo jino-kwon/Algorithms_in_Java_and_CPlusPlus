@@ -184,6 +184,7 @@ int main(int argc, char* argv[])
     // }
 
     inFile.open("img2.txt");
+    // inFile.open(argv[1]);
     outFile1.open("img2_output1.txt");
     outFile2.open("img2_output2.txt");
     string numRows, numCols, minVal, maxVal;
