@@ -1,8 +1,9 @@
 # Algorithm
 
-This is a repo for Algorithms class.
+This is a repo for **Algorithms** class.
 
 **Language**: C++ / Java
 
 **Covers**:
-  - Implementation of Stacks, 
+  - Linked List Implementation of Stacks, Queues, (ordered) Linked List in ***C++***
+  - Hash Table Implementation in ***C++***
