@@ -14,3 +14,6 @@ This is a repo that summarizes my coursework in **Algorithms**.
   7. Scheduling & Partial Ordering in ***Java***
   8. Prim's and Kruskal's Algorithm in ***C++***
   9. Solving 8 Puzzle Problem with A* Algorithm in ***Java***
+
+**Note**:
+I'm aware that some of these implementations are not optimal in terms of time/space complexity. However, these were implemented following specific specs provided by the instructor--whose intention was to show us the algorithm steps that help us better understand the concepts, rather than the ones that are more efficient.
