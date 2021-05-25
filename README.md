@@ -10,7 +10,7 @@ This is a repo that summarizes my coursework in **Algorithms**.
   3. Raddix Sort in ***C++***
   4. Huffman Coding in ***Java***
   5. Quad Trees in ***C++***
-  6. (REVIEW) Reverse Binary Tree and Pre-/In-/Post-order Traversal. 
+  6. (REVIEW) Reverse Binary Tree and Pre-/In-/Post-order Traversal in ***Java***
   7. Scheduling & Partial Ordering in ***Java***
   8. Prim's and Kruskal's Algorithm in ***C++***
   9. Solving 8 Puzzle Problem with A* Algorithm in ***Java***
