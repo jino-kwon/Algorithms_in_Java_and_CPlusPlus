@@ -8,7 +8,7 @@ The input file is a text file containing a list of triplets {<op firstName lastN
 
 The input file will look like the following:
 + John Doe
-+ Jane Doe
+- Jane Doe
   .
   .
   .
