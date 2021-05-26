@@ -1,4 +1,6 @@
-# Implementation of Stacks, Queues, Ordered List *Program Specs*:
+# Implementation of Stacks, Queues, Ordered List
+
+**Program Specs**:
 
 The operations include insertion, deletion, and print.
 The input file contains a list of pair {<op, data>} where op is either + or -, where + means insert, - means remove, and data is a positive integer.
