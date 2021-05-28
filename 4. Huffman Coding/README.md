@@ -11,9 +11,7 @@ The Huffman Coding Scheme is implemented -- from compute frequency to text compr
 If yes,
 
 5) Ask the user for the name of a text file to be compressed.
-6) Open the text file to be compressed.
-7) Call the encoding method to perform compression on the text file using the Huffman code table, and output the results.
-10) The name of the compressed file is to be created at run-time, using the original file name with an extension “_Compressed.txt”. For example, if the name of the file is “test1”, the name of the compressed file should be “test1_Compressed.txt”. (This can be done simply using string concatenation.)
-11) Close the compressed file.
-12) To make sure your encoding method works correctly, your program will re-open the compressed file (after it is closed) and call Decode(...) method to perform the de-compression, using the Huffman binary tree. Your program outputs the de-compressed result to a de-compressed text file.
-13) The name of the de-compressed file is to be created at run-time, using the original file name with an extension “_deCompressed.txt”. For example, if the name of the original text is “test1”, then the name of the de-compressed file should be “test1_deCompressed.txt”.
+6) Compress the text file using the Huffman code table, and output the results.
+7) The name of the compressed file is to be created at run-time.
+8) To ensure the encoding algorithm works, the program will re-open the compressed file and perform the de-compression, using the Huffman binary tree.
+9) The name of the de-compressed file is also to be created at run-time.
