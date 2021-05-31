@@ -7,7 +7,6 @@ The first line of the input file is the header information: number of rows, the 
 - Here's an example:
 
 4 5 0 1
-
 0 0 0 1 0
 
 0 1 1 0 1
