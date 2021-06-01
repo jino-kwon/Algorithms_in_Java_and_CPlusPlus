@@ -1,5 +1,3 @@
-package exam;
-
 import java.io.*;
 
 class treeNode
