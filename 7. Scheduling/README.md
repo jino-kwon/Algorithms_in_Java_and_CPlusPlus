@@ -7,7 +7,8 @@ The input consists of two files: (1) the first file contains a graph, and (2) th
 The number of processors that can be used for scheduling will also be provided in runtime.
 
 There can be four possibilities for scheduling:
-(1) using limited processors where each job takes 1 unit of processing time
-(2) using limited processors where jobs take variable unit of processing time
-(3) using unlimited processors where each job takes 1 unit of processing time
-(4) using unlimited processors where jobs take variable unit of processing time
+
+1. using limited processors where each job takes 1 unit of processing time
+2. using limited processors where jobs take variable unit of processing time
+3. using unlimited processors where each job takes 1 unit of processing time
+4. using unlimited processors where jobs take variable unit of processing time
