@@ -1,6 +1,6 @@
 # Algorithm
 
-This is a repo that summarizes my coursework in **Algorithms**.
+This is a repo that summarizes my coursework in **Analysis of Algorithms**.
 
 **Language**: C++ / Java
 
