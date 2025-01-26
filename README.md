@@ -1,8 +1,8 @@
-# Algorithm
+# Algorithms in Java and C++
 
 This is a repo that summarizes my coursework in **Analysis of Algorithms**.
 
-**Language**: C++ / Java
+**Language**: Java / C++
 
 **Covers**:
   1. (REVIEW) Linked List Implementation of Stacks, Queues, (ordered) Linked List in ***C++***
